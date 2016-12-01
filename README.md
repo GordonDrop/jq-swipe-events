@@ -35,8 +35,4 @@ Swipe event object is extended `touchmove` event. Following properties are added
     positive for `swipeDown`
     negative for `swipeUp`
     
-- **e.pageX**: Number
-    original `touchmove` e.pageX
-
-- **e.pageY**
-    original `touchmove` e.pageY
+- **e.originalEvent** - native event object

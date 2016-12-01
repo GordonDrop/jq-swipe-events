@@ -35,8 +35,7 @@
             event = {
               swipeDeltaX: -deltaX,
               swipeDeltaY: -deltaY,
-              pageX: touch.pageX,
-              pageY: touch.pageY
+              originalEvent: e.originalEvent
             };
 
         if (abs(deltaY) > 0 || abs(deltaY) > 0) {
