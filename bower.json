@@ -23,8 +23,5 @@
   ],
   "devDependencies": {
     "jquery": "^3.1.1"
-  },
-  "dependencies": {
-    "jq-swipe-events": "^0.0.3"
   }
 }
