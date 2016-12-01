@@ -5,7 +5,7 @@
   ],
   "url": "https://github.com/GordonDrop/jq-swipe-events.git",
   "description": "Swipe events jquery based",
-  "main": "swipe-events",
+  "main": "jq-swipe-events.js",
   "keywords": [
     "swipe",
     "touch",
@@ -21,7 +21,7 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "jquery": "^3.1.1"
+  "dependencies": {
+    "jquery": "latest"
   }
 }
