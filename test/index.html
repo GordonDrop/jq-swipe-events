@@ -42,6 +42,7 @@
 
     function drag(e) {
       var box = $(this).closest('.box'),
+        e = e.originalEvent,
         newX = e.pageX - box.offset().left - $(this).width() / 2,
         newY = e.pageY - box.offset().top - $(this).height() / 2;
 
@@ -56,6 +57,7 @@
 
     function dragVertical(e) {
       var box = $(this).closest('.box'),
+        e = e.originalEvent,
         newX = e.pageX - box.offset().left - $(this).width() / 2;
 
       if (newX < 0 || newX > (box.width() - $(this).width())) return;
