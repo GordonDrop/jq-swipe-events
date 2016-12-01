@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../jq-swipe-events.js"></script>
+  <style>
+    .box { max-width: 400px; height: 400px; margin: 20px auto; border: 1px solid; background-color: tomato;
+      position: relative; }
+    .horizontal { height: 62px; }
+    .vertical {  width: 62px; }
+    .box-label { font-family: Arial, sans-serif; font-size: 16px; max-width: 400px; margin: 10px auto; }
+    .slide { width: 60px; height: 60px; border: 1px solid; background-color: cadetblue;
+      position: absolute; top: 0; left: 0; }
+  </style>
+</head>
+<body>
+
+  <div class="box-label">Swipe horizontal</div>
+  <div class="box horizontal">
+    <div class="slide" id="test-horizontal"></div>
+  </div>
+
+  <div class="box-label">Swipe vertical</div>
+  <div class="box vertical">
+    <div class="slide" id="test-vertical"></div>
+  </div>
+
+  <div class="box-label">Draggable</div>
+  <div class="box">
+    <div class="slide" id="test"></div>
+  </div>
+
+  <script>
+    $('#test').swipeEvents().on('swipe', drag);
+    $('#test-vertical').swipeEvents().on('swipeLeft swipeRight', dragHorizontal);
+    $('#test-horizontal').swipeEvents().on('swipeUp swipeDown', dragVertical);
+
+    function drag(e) {
+      var box = $(this).closest('.box'),
+        newX = e.pageX - box.offset().left - $(this).width() / 2,
+        newY = e.pageY - box.offset().top - $(this).height() / 2;
+
+      if (newX < 0 || newX > (box.width() - $(this).width())) return;
+      if (newY < 0 || newY > (box.height() - $(this).height())) return;
+
+      $(this).css({
+        top: newY,
+        left: newX
+      });
+    }
+
+    function dragVertical(e) {
+      var box = $(this).closest('.box'),
+        newX = e.pageX - box.offset().left - $(this).width() / 2;
+
+      if (newX < 0 || newX > (box.width() - $(this).width())) return;
+
+      $(this).css({
+        left: newX
+      });
+    }
+
+    function dragHorizontal(e) {
+      var box = $(this).closest('.box'),
+        newY = e.pageY - box.offset().top - $(this).height() / 2;
+
+      if (newY < 0 || newY > (box.height() - $(this).height())) return;
+
+      $(this).css({
+        top: newY
+      });
+    }
+
+    $('.slide').on('touchstart', function (e) {
+      $(this).css({ 'opacity': 0.5 })
+    });
+
+    $('.slide').on('touchend', function (e) {
+      $(this).css({ 'opacity': 1 })
+    })
+  </script>
+</body>
+</html>
