@@ -36,13 +36,13 @@
   </div>
 
   <script>
-    $('#test').swipeEvents().on('swipe', drag);
-    $('#test-vertical').swipeEvents().on('swipeLeft swipeRight', dragHorizontal);
-    $('#test-horizontal').swipeEvents().on('swipeUp swipeDown', dragVertical);
+    $('#test').on('swipe', drag);
+    $('#test-vertical').on('swipe', dragHorizontal);
+    $('#test-horizontal').on('swipe', dragVertical);
 
     function drag(e) {
+      console.log(e);
       var box = $(this).closest('.box'),
-        e = e.originalEvent,
         newX = e.pageX - box.offset().left - $(this).width() / 2,
         newY = e.pageY - box.offset().top - $(this).height() / 2;
 
@@ -57,7 +57,6 @@
 
     function dragVertical(e) {
       var box = $(this).closest('.box'),
-        e = e.originalEvent,
         newX = e.pageX - box.offset().left - $(this).width() / 2;
 
       if (newX < 0 || newX > (box.width() - $(this).width())) return;

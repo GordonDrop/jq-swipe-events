@@ -11,17 +11,10 @@ bower install jq-swipe-events
 
 ## Main swipe event
 ```javascript
-$(selector).swipeEvent().on('swipe', function(e) {
+$(selector).on('swipe', function(e) {
     // your actions
 });
 ```
-
-## Additional events:
-
-- swipeLeft;
-- swipeRight;
-- swipeUp;
-- swipeDown.
 
 ## Swipe event object
 
@@ -36,3 +29,6 @@ Swipe event object is extended `touchmove` event. Following properties are added
     negative for `swipeUp`
     
 - **e.originalEvent** - native event object
+
+## TODO
+- add directional swipe events

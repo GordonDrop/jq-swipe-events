@@ -4,66 +4,70 @@
   var pluginName = 'swipeEvents';
   var TOUCHSTART = 'touchstart.'  + pluginName,
       TOUCHEND = 'touchend.'  + pluginName,
-      TOUCHMOVE = 'touchmove.'  + pluginName;
+      TOUCHMOVE = 'touchmove.'  + pluginName,
+      TOUCHCANCEL = 'touchcancel.'  + pluginName;
 
   var abs = Math.abs;
 
-  $.fn.swipeEvents = swipeEvents;
+  jQuery.event.special.swipe = {
+    setup: function () {
+      $(this)
+        .on(TOUCHSTART, start)
+        .on(TOUCHCANCEL, end)
+        .on(TOUCHEND, end);
+    },
 
-  function swipeEvents() {
-    return this.each(function (i, el) {
-      var startX, startY, $el = $(el);
+    handle: function (event, data) {
+      event.pageX = data.pageX;
+      event.pageY = data.pageY;
+      event.swipeDeltaX = data.deltaX;
+      event.swipeDeltaY = data.deltaY;
+      event.originalEvent = data.originalEvent;
 
+      event.handleObj.handler.call(this, event);
+    },
 
-      $el.on(TOUCHSTART, start);
-      $el.on(TOUCHEND, end);
+    remove: function () {
+      $(this)
+        .removeData('swipe')
+        .off(TOUCHSTART)
+        .off(TOUCHCANCEL)
+        .off(TOUCHMOVE)
+        .off(TOUCHEND);
+    }
+  };
 
-      function start(e) {
-        if (e.touches.length === 1) e.preventDefault();
-        var touch = e.originalEvent.touches[0];
+  function start(e) {
+    if (e.touches.length === 1) e.preventDefault();
+    $(this).on(TOUCHMOVE, move);
 
-        startX = touch.pageX;
-        startY = touch.pageY;
+    var touch = e.originalEvent.touches[0];
 
-        $el.on(TOUCHMOVE, move);
-      }
+    $(this).data('swipe', {
+      startX: touch.pageX,
+      startY: touch.pageY
+    });
+  }
 
-      function move(e) {
-        var touch = e.originalEvent.touches[0];
-        var deltaX = touch.pageX - startX,
-            deltaY = touch.pageY - startY,
-            event = {
-              swipeDeltaX: -deltaX,
-              swipeDeltaY: -deltaY,
-              originalEvent: e.originalEvent
-            };
+  function move(e) {
+    var touch = e.originalEvent.changedTouches[0];
+    var data = $(this).data('swipe');
+    var deltaX = touch.pageX - data.startX,
+        deltaY = touch.pageY - data.startY;
 
-        if (abs(deltaY) > 0 || abs(deltaY) > 0) {
-          $el.trigger(
-            $.Event('swipe', event));
-        }
+    if (abs(deltaY) > 0 || abs(deltaY) > 0) {
+      $(this).triggerHandler('swipe', {
+        pageX: touch.pageX,
+        pageY: touch.pageY,
+        swipeDeltaX: -deltaX,
+        swipeDeltaY: -deltaY,
+        originalEvent: e.originalEvent
+      });
+    }
+  }
 
-        if (deltaX > 0) {
-          $el.trigger($.Event('swipeLeft', event));
-        }
-
-        if (deltaX < 0) {
-          $el.trigger($.Event('swipeRight', event));
-        }
-
-        if (deltaY > 0) {
-          $el.trigger($.Event('swipeDown', event));
-        }
-
-        if (deltaY < 0) {
-          $el.trigger($.Event('swipeUp', event));
-        }
-      }
-
-      function end(e) {
-        e.preventDefault();
-        $el.off(TOUCHMOVE, move);
-      }
-    })
+  function end(e) {
+    e.preventDefault();
+    $(this).off(TOUCHMOVE);
   }
 })(jQuery, window, document);
