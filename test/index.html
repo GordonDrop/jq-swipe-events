@@ -67,6 +67,7 @@
     }
 
     function dragHorizontal(e) {
+      console.log(e);
       var box = $(this).closest('.box'),
         newY = e.pageY - box.offset().top - $(this).height() / 2;
 

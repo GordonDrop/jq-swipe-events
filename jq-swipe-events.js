@@ -20,9 +20,8 @@
     handle: function (event, data) {
       event.pageX = data.pageX;
       event.pageY = data.pageY;
-      event.swipeDeltaX = data.deltaX;
-      event.swipeDeltaY = data.deltaY;
-      event.originalEvent = data.originalEvent;
+      event.swipeDeltaX = data.swipeDeltaX;
+      event.swipeDeltaY = data.swipeDeltaY;
 
       event.handleObj.handler.call(this, event);
     },
